@@ -3,6 +3,7 @@ class Cart
 
   def initialize(items = [])
     @items = items
+    @special = false
   end
 
   def add_item(id)
@@ -42,12 +43,20 @@ class Cart
     total = items.inject(0) { |s, item| s + item.price }
 
     # Use Strategy Pattern!
-    total = total * 0.9 if xmas?
+    # total = total * 0.9 if xmas?
+
+    x = SpecialEvent.exist_event( @special )
+    e = SpecialEvent.new( x )
+    total = e.discount( total )
+
     total
   end
 
-  private
-  def xmas?
-    Time.now.month == 12 and Time.now.day == 25
+  def set_special
+    @special = true
   end
+  # private
+  # def xmas?
+  #   Time.now.month == 12 and Time.now.day == 25
+  # end
 end
